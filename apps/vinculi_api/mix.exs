@@ -37,7 +37,8 @@ defmodule VinculiApi.Mixfile do
      {:phoenix_ecto, "~> 3.2"},
      {:postgrex, ">= 0.0.0"},
      {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:bolt_sips, "~> 0.3"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
@@ -49,6 +50,6 @@ defmodule VinculiApi.Mixfile do
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop", "ecto.setup"],
-     "test": ["ecto.create --quiet", "ecto.migrate", "test"]]
+     "test": ["run priv/repo/seeds.exs", "run priv/repo/drop.exs", "test"]]
   end
 end

@@ -36,6 +36,14 @@ config :logger, :console, format: "[$level] $message\n"
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
+# Configure  Neo4J database
+config :bolt_sips, Bolt,
+  hostname: "localhost",
+  port: 7687,
+  pool_size: 5,
+  max_overflow: 1,
+  basic_auth: ["username": "neo4j", "password": "Goreydyi"]
+
 # Configure your database
 config :vinculi_api, VinculiApi.Repo,
   adapter: Ecto.Adapters.Postgres,

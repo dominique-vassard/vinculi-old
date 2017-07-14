@@ -7,5 +7,7 @@ defmodule VinculiApi.Web.Router do
 
   scope "/api", VinculiApi.Web do
     pipe_through :api
+
+    get "/metadata/node/labels", MetadataController, :node_labels
   end
 end

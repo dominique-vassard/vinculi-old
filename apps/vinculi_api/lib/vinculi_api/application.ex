@@ -12,6 +12,8 @@ defmodule VinculiApi.Application do
       supervisor(VinculiApi.Repo, []),
       # Start the endpoint when the application starts
       supervisor(VinculiApi.Web.Endpoint, []),
+      # Hack: Force Bolt.Sips to start
+      supervisor(Bolt.Sips, [Application.get_env(:bolt_sips, Bolt)])
       # Start your own worker by calling: VinculiApi.Worker.start_link(arg1, arg2, arg3)
       # worker(VinculiApi.Worker, [arg1, arg2, arg3]),
     ]
