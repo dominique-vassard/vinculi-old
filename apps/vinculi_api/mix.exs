@@ -37,7 +37,8 @@ defmodule VinculiApi.Mixfile do
      {:phoenix_ecto, "~> 3.2"},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:bolt_sips, "~> 0.3"}]
+     {:bolt_sips, "~> 0.3"},
+     {:ars_magica, in_umbrella: true}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
