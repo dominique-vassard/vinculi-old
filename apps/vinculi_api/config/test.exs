@@ -16,12 +16,3 @@ config :bolt_sips, Bolt,
   pool_size: 5,
   max_overflow: 1,
   basic_auth: ["username": "neo4j", "password": "Goreydyi"]
-
-# Configure your database
-config :vinculi_api, VinculiApi.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "vinculi",
-  password: "Koysteuk",
-  database: "vinculi_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox

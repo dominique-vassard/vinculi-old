@@ -16,7 +16,7 @@ defmodule VinculiApi.DataCase do
 
   using do
     quote do
-      alias VinculiApi.Repo
+      alias VinculiApi.BoltRepo
 
       import Ecto
       import Ecto.Changeset
@@ -25,12 +25,7 @@ defmodule VinculiApi.DataCase do
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(VinculiApi.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(VinculiApi.Repo, {:shared, self()})
-    end
+  setup _tags do
 
     :ok
   end

@@ -8,8 +8,6 @@ defmodule VinculiApi.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
-      # Start the Ecto repository
-      supervisor(VinculiApi.Repo, []),
       # Start the endpoint when the application starts
       supervisor(VinculiApi.Web.Endpoint, []),
       # Hack: Force Bolt.Sips to start
