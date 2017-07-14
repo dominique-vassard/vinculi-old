@@ -5,6 +5,11 @@ defmodule ArsMagica.Mixfile do
     [app: :ars_magica,
      version: "0.1.0",
      elixir: "~> 1.4",
+     build_path: "../../_build",
+     config_path: "../../config/config.exs",
+     deps_path: "../../deps",
+     lockfile: "../../mix.lock",
+     elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -18,6 +23,10 @@ defmodule ArsMagica.Mixfile do
     [extra_applications: [:logger, :ecto, :mariaex],
      mod: {ArsMagica.Application, []}]
   end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Dependencies can be Hex packages:
   #
