@@ -38,7 +38,8 @@ defmodule VinculiApi.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:bolt_sips, "~> 0.3"},
-     {:ars_magica, in_umbrella: true}]
+     {:ars_magica, in_umbrella: true},
+     {:vinculi_db, in_umbrella: true}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

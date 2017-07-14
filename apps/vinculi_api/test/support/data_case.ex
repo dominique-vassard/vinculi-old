@@ -25,7 +25,12 @@ defmodule VinculiApi.DataCase do
     end
   end
 
-  setup _tags do
+  setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(VinculiDb.Repo)
+
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(VinculiDb.Repo, {:shared, self()})
+    end
 
     :ok
   end
