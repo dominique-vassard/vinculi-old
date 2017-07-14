@@ -5,7 +5,6 @@ defmodule VinculiApi.Meta do
   alias VinculiApi.BoltRepo
 
   alias VinculiApi.Meta.Graph
-  alias VinculiApi.Meta.Node
 
   def list_labels() do
     BoltRepo.all(Graph.get_schema_cql())

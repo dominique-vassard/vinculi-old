@@ -4,7 +4,6 @@ defmodule VinculiApi.TestPerson do
   """
   use Ecto.Schema
 
-  import Ecto
   import Ecto.Changeset
 
   schema "TestPerson" do
