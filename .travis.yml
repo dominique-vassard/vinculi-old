@@ -16,6 +16,7 @@ before_script:
   - mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'arsmagbdd'@'%';"
   - mysql -e "FLUSH PRIVILEGES;"
   - psql -c "CREATE USER vinculi WITH PASSWORD 'Koysteuk'" -U postgres
+  - psql -c "ALTER USER vinculi WITH SUPERUSER;" -U postgres
   - cp config/travis/data.tar.gz ~
   - sudo service neo4j stop
   - sleep 20
