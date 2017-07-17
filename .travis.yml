@@ -21,11 +21,14 @@ before_script:
   - cp config/travis/data.tar.gz ~
   - sudo service neo4j stop
   - sleep 20
-  - sudo rm -rf /usr/local/neo4j-3.2.1/data
-  - (cd /usr/local/neo4j-3.2.1 && sudo tar xvf ~/data.tar.gz --strip 1)
+  - sudo rm -rf /usr/local/neo4j-3.2.1/data/*
+  - (cd /usr/local/neo4j-3.2.1 && sudo tar xvf ~/data.tar.gz)
   - echo 'dbms.allow_format_migration=true' | sudo tee --append /usr/local/neo4j-3.2.1/conf/neo4j.conf
   - echo 'dbms.connector.bolt.listen_address=0.0.0.0:7688' | sudo tee --append /usr/local/neo4j-3.2.1/conf/neo4j.conf
   - sudo sed -i 's|dbms.security.auth_enabled=false|dbms.security.auth_enabled=true|g' /usr/local/neo4j-3.2.1/conf/neo4j.conf
   - cat /usr/local/neo4j-3.2.1/conf/neo4j.conf
+  - ls /usr/local/neo4j-3.2.1/
+  - ls /usr/local/neo4j-3.2.1/data/
+  - ls /usr/local/neo4j-3.2.1/data/dbms
   - sudo service neo4j start
   - sleep 30
