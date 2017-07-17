@@ -24,6 +24,7 @@ before_script:
   - sudo rm -rf /usr/local/neo4j-3.2.1/data
   - (cd /usr/local/neo4j-3.2.1 && sudo tar xvf ~/data.tar.gz --strip 1)
   - echo 'dbms.allow_format_migration=true' | sudo tee --append /usr/local/neo4j-3.2.1/neo4j.conf
+  - echo 'dbms.connector.bolt.listen_address=0.0.0.0:7688' | sudo tee --append /usr/local/neo4j-3.2.1/neo4j.conf
   - sudo sed -i 's|dbms.security.auth_enabled=false|dbms.security.auth_enabled=true|g' /usr/local/neo4j-3.2.1/neo4j.conf
   - cat /usr/local/neo4j-3.2.1/neo4j.conf
   - sudo service neo4j start
