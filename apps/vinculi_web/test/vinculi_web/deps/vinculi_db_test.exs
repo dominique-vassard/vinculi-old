@@ -1,8 +1,6 @@
 defmodule VinculiWeb.Web.VinculiDbTest do
   use VinculiWeb.DataCase
   alias VinculiDb.User.UserTemp
-  alias VinculiDb.User.User
-  alias VinculiDb.Repo
 
   test "Add a user to database" do
     attrs = %{first_name: "VinculiWeb", last_name: "Duff",
