@@ -22,9 +22,10 @@ before_script:
   - sudo service neo4j stop
   - sleep 20
   - sudo rm -rf /usr/local/neo4j-3.2.1/data/*
-  - (cd /usr/local/neo4j-3.2.1 && sudo tar xvf ~/data.tar.gz --strip 1)
+  - (cd /usr/local/neo4j-3.2.1 && sudo tar xvf ~/data.tar.gz)
   - echo 'dbms.allow_format_migration=true' | sudo tee --append /usr/local/neo4j-3.2.1/conf/neo4j.conf
   - echo 'dbms.connector.bolt.listen_address=0.0.0.0:7688' | sudo tee --append /usr/local/neo4j-3.2.1/conf/neo4j.conf
+  - echo 'dbms.connector.http.listen_address=0.0.0.0:7474' | sudo tee --append /usr/local/neo4j-3.2.1/conf/neo4j.conf
   - sudo sed -i 's|dbms.security.auth_enabled=false|dbms.security.auth_enabled=true|g' /usr/local/neo4j-3.2.1/conf/neo4j.conf
   - cat /usr/local/neo4j-3.2.1/conf/neo4j.conf
   - ls /usr/local/neo4j-3.2.1/
@@ -32,3 +33,10 @@ before_script:
   - ls /usr/local/neo4j-3.2.1/data/dbms
   - sudo service neo4j start
   - sleep 30
+  - nc -zv localhost 7474
+  - nc -zv localhost 7688
+
+script:
+  - curl http://neo4j:Goreydyi@localhost:7474/db/data/labels
+  - cat /var/log/neo4j/neo4j.log
+  - mix test
