@@ -11,7 +11,7 @@ defmodule VinculiWeb.Web.VinculiDbTest do
 
     result = Map.put(insert_result, :pass, nil)
 
-    res = Repo.get_by!(User, first_name: "VinculiWeb")
+    res = UserTemp.get_by_firstname("VinculiWeb")
     assert res == result
   end
 end

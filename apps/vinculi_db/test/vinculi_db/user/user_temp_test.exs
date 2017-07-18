@@ -10,7 +10,7 @@ defmodule VinculiDb.User.UserTempTest do
 
     result = Map.put(insert_result, :pass, nil)
 
-    res = Repo.get_by!(User, first_name: "John")
+    res = UserTemp.get_by_firstname("John")
     assert res == result
   end
 end
