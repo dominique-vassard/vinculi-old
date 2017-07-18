@@ -12,6 +12,7 @@ defmodule ArsMagica.Mixfile do
      elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     aliases: aliases(),
      deps: deps()]
   end
 
@@ -41,4 +42,9 @@ defmodule ArsMagica.Mixfile do
     [{:ecto, "~> 2.1"},
     {:mariaex, "~> 0.8.2"}]
   end
+
+  defp aliases do
+    ["test": ["ecto.create --quiet", "ecto.migrate", "test"]]
+  end
+
 end
