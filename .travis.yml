@@ -1,10 +1,15 @@
 dist: trusty
-group: deprecated-2017Q3
 sudo: required
 
 language: elixir
 elixir: 1.4.2
 otp_release: 19.3
+
+env:
+  global:
+    - NEO4J_PATH=/usr/local/neo4j-3.2.1
+    - NEO4J_CONF_PATH=/usr/local/neo4j-3.2.1/conf
+    - secure: "uulaInKlphqHb44cM7CCeKXQn0fteLU0ePVP9sG1YINS/N9nWlh+xOBE/QZPyoYDHC7DdxUAak8M/b5KCgUfQiUfkKV4/8eo3qwneN7O04CQKuIqfXteZjaQVNiL6qpW+vNNaFb9IXYQaGcHx1yJqC/EfuMsDArXiZTRW8GB4qAhtJhgeq4RL6dIhyLUfV1l1TJCrEHyOBIGL4daDSUJDuuomQzvUVJZH4hSKZ/POFDU+sGf7koe5tpByO5HPI+oZxTKSfyURxXd1heQwascsxS3WKhjZgkzbd4ZJy/pXPKezO0cm5x/B5ssRuso9u6934MHWODzR0aWxzAgsDgGc86GaKo3INTgzFPJ81LRkvEkAqSusY3MpxNhjp5V3sjotp9w6zWmMPJadLYwNsCsw3h3mGye7zoAac3jlXuBXW1Y18b+mCfmLRyeCwrWc1uDbALcM6weMIhOGXG0hWCHSRU5ouSgejfYkhz/bdeOQTfjlGbHH56Ttu0Z8ym9UDEGsWMiYGaAzEWQ+kXd2/8mZBYYqJmXUeHDQBiIyIeqHUhKk9USp3j39UVsMiDOZnR7b+HNchmakr8DDx/GD8ghr0VdRxsX19kQDZje560CdDKM3rBCJdmLftobem4yMNPZ8GiSCKSBpUwwh6wy/+FMbP5+pkco3xJb3i55cyXS0jE="
 
 services:
   - mysql
@@ -14,28 +19,25 @@ services:
 before_script:
   - mysql -e "CREATE DATABASE arsmagbdd_test;" -u root
   - mysql -e "CREATE USER 'arsmagbdd'@'localhost' IDENTIFIED BY 'ars_magica';"
-  - mysql -e "CREATE USER 'arsmagbdd'@'127.0.0.1' IDENTIFIED BY 'ars_magica';"
   - mysql -e "GRANT ALL ON *.* TO 'arsmagbdd'@'localhost' WITH GRANT OPTION;"
-  - mysql -e "GRANT ALL ON *.* TO 'arsmagbdd'@'127.0.0.1' WITH GRANT OPTION;"
   - mysql -e "FLUSH PRIVILEGES;" -u root
   - mysql -e "SELECT User, Host, Password, plugin FROM mysql.user;" -u root
-  - psql -c "CREATE USER vinculi WITH PASSWORD 'Koysteuk';" -U postgres
+  - psql -c "CREATE USER vinculi WITH PASSWORD '$VINCULIDB_PASSWORD';" -U postgres
   - psql -c "ALTER USER vinculi WITH SUPERUSER;" -U postgres
   - psql -c "CREATE DATABASE vinculi_test;" -U postgres
   - cp config/travis/data.tar.gz ~
   - sudo service neo4j stop
   - sleep 20
-  - ls -latr /var/lib/neo4j
-  - ls -latr /var/lib/neo4j/data
-  - sudo rm -rf /var/lib/neo4j/data/*
-  - (cd /var/lib/neo4j && sudo tar xvf ~/data.tar.gz)
-  - echo 'dbms.allow_format_migration=true' | sudo tee --append /etc/neo4j/neo4j.conf
-  - echo 'dbms.connector.bolt.listen_address=0.0.0.0:7688' | sudo tee --append /etc/neo4j/neo4j.conf
-  - echo 'dbms.connector.http.listen_address=0.0.0.0:7474' | sudo tee --append /etc/neo4j/neo4j.conf
-  - sudo sed -i 's|dbms.security.auth_enabled=false|dbms.security.auth_enabled=true|g' /etc/neo4j/neo4j.conf
-  - cat /etc/neo4j/neo4j.conf
-  - sudo chown -R neo4j:adm /var/lib/neo4j/data
-  - sudo chown neo4j:adm /var/lib/neo4j/data/databases
-  - sudo chown neo4j:adm /var/lib/neo4j/data/dbms
+  - echo $VINCULIDB_PASSWORD
+  - sudo rm -rf /usr/local/neo4j-3.2.1/data/*
+  - (cd $NEO4J_PATH && sudo tar xvf ~/data.tar.gz)
+  - echo 'dbms.allow_format_migration=true' | sudo tee --append $NEO4J_CONF_PATH/neo4j.conf
+  - echo 'dbms.connector.bolt.listen_address=0.0.0.0:7688' | sudo tee --append $NEO4J_CONF_PATH/neo4j.conf
+  - echo 'dbms.connector.http.listen_address=0.0.0.0:7474' | sudo tee --append $NEO4J_CONF_PATH/neo4j.conf
+  - sudo sed -i 's|dbms.security.auth_enabled=false|dbms.security.auth_enabled=true|g' $NEO4J_CONF_PATH/neo4j.conf
+  - cat $NEO4J_CONF_PATH/neo4j.conf
+  - sudo chown -R travis:travis /usr/local/neo4j-3.2.1/data
+  - sudo chown travis:travis /usr/local/neo4j-3.2.1/data/databases
+  - sudo chown travis:travis /usr/local/neo4j-3.2.1/data/dbms
   - sudo service neo4j start
   - sleep 30
