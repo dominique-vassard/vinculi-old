@@ -1,0 +1,36 @@
+dist: trusty
+sudo: required
+
+language: elixir
+elixir: 1.4.2
+otp_release: 19.3
+
+env:
+  global:
+    - NEO4J_PATH=/usr/local/neo4j-3.2.1
+    - NEO4J_CONF_PATH=/usr/local/neo4j-3.2.1/conf
+
+services:
+  - mysql
+  - postgresql
+  - neo4j
+
+before_script:
+  - mysql -e "CREATE DATABASE arsmagbdd_test;" -u root
+  - mysql -e "CREATE USER 'arsmagbdd'@'localhost' IDENTIFIED BY 'ars_magica';"
+  - mysql -e "GRANT ALL ON *.* TO 'arsmagbdd'@'localhost' WITH GRANT OPTION;"
+  - mysql -e "FLUSH PRIVILEGES;" -u root
+  - mysql -e "SELECT User, Host, Password, plugin FROM mysql.user;" -u root
+  - psql -c "CREATE USER vinculi WITH PASSWORD 'Koysteuk';" -U postgres
+  - psql -c "ALTER USER vinculi WITH SUPERUSER;" -U postgres
+  - psql -c "CREATE DATABASE vinculi_test;" -U postgres
+  - sudo service neo4j stop
+  - sleep 20
+  - mkdir $NEO4J_PATH/data/dbms
+  - cp config/travis/auth $NEO4J_PATH/data/dbms/auth
+  - echo 'dbms.allow_format_migration=true' | sudo tee --append $NEO4J_CONF_PATH/neo4j.conf
+  - echo 'dbms.connector.bolt.listen_address=0.0.0.0:7688' | sudo tee --append $NEO4J_CONF_PATH/neo4j.conf
+  - sudo sed -i 's|dbms.security.auth_enabled=false|dbms.security.auth_enabled=true|g' $NEO4J_CONF_PATH/neo4j.conf
+  - sudo chown -R travis:travis $NEO4J_PATH/data/dbms
+  - sudo service neo4j start
+  - sleep 30

@@ -3,6 +3,17 @@ defmodule ArsMagica.Taxonomy do
     Access to Ars Magica taxonomy data
   """
 
+  use Ecto.Schema
+
+  schema "taxonomy_term_data" do
+    field :tid, :integer
+    field :vid, :integer
+    field :name, :string
+    field :description, :string
+    field :format, :string
+    field :weight, :integer
+  end
+
   @doc """
   Return the taxonomy data for the given id
   """

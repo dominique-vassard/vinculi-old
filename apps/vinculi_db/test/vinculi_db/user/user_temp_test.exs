@@ -1,7 +1,6 @@
 defmodule VinculiDb.User.UserTempTest do
   use VinculiDb.SupportCase
   alias VinculiDb.User.UserTemp
-  alias VinculiDb.User.User
 
   test "Add a user to database" do
     attrs = %{first_name: "John", last_name: "Duff",
@@ -10,7 +9,7 @@ defmodule VinculiDb.User.UserTempTest do
 
     result = Map.put(insert_result, :pass, nil)
 
-    res = Repo.get_by!(User, first_name: "John")
+    res = UserTemp.get_by_firstname("John")
     assert res == result
   end
 end

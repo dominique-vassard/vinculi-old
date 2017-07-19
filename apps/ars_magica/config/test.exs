@@ -6,4 +6,4 @@ config :ars_magica, ArsMagica.Repo,
   username: "arsmagbdd",
   password: "ars_magica",
   hostname: "localhost",
-  database: "arsmagbdd"
+  database: "arsmagbdd_test"
