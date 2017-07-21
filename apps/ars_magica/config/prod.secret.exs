@@ -1,3 +1,5 @@
+use Mix.Config
+
 # Ars Magica DB configuration
 config :ars_magica, ArsMagica.Repo,
   adapter: Ecto.Adapters.MySQL,
