@@ -16,7 +16,7 @@ use Mix.Config
 config :vinculi_api, VinculiApi.Web.Endpoint,
   on_init: {VinculiApi.Web.Endpoint, :load_from_system_env, []},
   # http: [port: {:system, "PORT"}],
-  # url: [scheme: "https", host: "vinculi.heroku-appcom", port: 443],
+  url: [scheme: "https", host: "vinculi.herokuapp.com", port: 443],
   force_ssl: [host: nil, rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json",
   secret_key_base: System.get_env("SECRET_KEY_BASE")
