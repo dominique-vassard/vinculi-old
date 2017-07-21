@@ -9,11 +9,3 @@ config :vinculi_web, VinculiWeb.Web.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-# Configure your database
-config :vinculi_web, VinculiWeb.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "vinculi",
-  password: "Koysteuk",
-  database: "vinculi_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox

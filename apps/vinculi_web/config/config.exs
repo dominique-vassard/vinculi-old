@@ -8,7 +8,7 @@ use Mix.Config
 # General application configuration
 config :vinculi_web,
   namespace: VinculiWeb,
-  ecto_repos: [VinculiWeb.Repo]
+  ecto_repos: []
 
 # Configures the endpoint
 config :vinculi_web, VinculiWeb.Web.Endpoint,
