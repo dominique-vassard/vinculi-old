@@ -25,12 +25,10 @@ config :logger, level: :info
 
 # Configure  Neo4J database
 config :bolt_sips, Bolt,
-  hostname: System.get_env("GRAPHENEDB_BOLT_URL"),
-  port: 7687,
-  pool_size: 5,
-  max_overflow: 1,
+  url: System.get_env("GRAPHENEDB_BOLT_URL"),
   basic_auth: ["username": System.get_env("GRAPHENEDB_BOLT_USER"),
-               "password": System.get_env("GRAPHENEDB_BOLT_PASSWORD")]
+               "password": System.get_env("GRAPHENEDB_BOLT_PASSWORD")],
+  ssl: true
 
 # ## SSL Support
 #
