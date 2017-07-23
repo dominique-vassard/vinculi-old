@@ -42,11 +42,11 @@ script:
   - mix test
   - echo "Re-running tests for each app" ; for app in apps/**; do cd $app && mix test; cd ../.. ; done
 
-# deploy:
-#   provider: heroku
-#   app: vinculi
-#   api_key:
-#     secure: FZQ8NCufJGlV++rUtuKSnRQcl75+8ZQ10xSzdiAPq/G6l1SnN1eV6sYqxUV1vwSAeAlRq2j3fFf50zQtIDOyiEc0FwvsUvFB5cpuaIYYhn2G/yK4DMnb/Z+IT9Sp/nY90nERk5sU0fst6uxxpFvxey44f5jWFJ4O8x4XHWUtc3Cv/FFm7kmS+pMYr6e4rFFI6xBoJcvTK3MdIE50LtAa14tt/nW/CFQDNxhkI7n3hpH1LmJJqBgNT/aFoec0yr4nx4CQZk2JAsog1lKHtUvHLRjY+mol2QhUtMc1EON84yelkrcJyzuQyC1twBoRoMpNfPo9JoxZLt6aI/Ypx79gurgDVNA7Mi/HHe/Q2oceWfmLMnK4h/OvtivK4sog5caN0cjH4XeQQl967WVYj0G3hmxk9WzPxz5iUe9aWwzIfiHEPAsysSrata6Tm5RMS3yx4JgJfrAhsNSFXlDdBJvIzvcKP5/iy9AtrpA22N9TJRY4LDRmctk6398FgjwqFCuV5554FNCSUu2w07qpUAeP/T5P9XibtrUnFhMYTYs1kTnI8mNuBG4ePBvCtPHr6wFsHvrh81Ril6V5YYXFaMY5khcMyiy2j9w91G/N7vaL4gi0ypd/tzttf6LatqMf3hYbujYJndDfTl3jlzPnHh93hrtDQISgoTRcxzVVRrDlJsE=
-#   buildpack:
-#     - https://github.com/HashNuke/heroku-buildpack-elixir.git
-#     - https://github.com/gjaldon/heroku-buildpack-phoenix-static.git
+deploy:
+  provider: heroku
+  app: vinculi
+  api_key:
+    secure: FZQ8NCufJGlV++rUtuKSnRQcl75+8ZQ10xSzdiAPq/G6l1SnN1eV6sYqxUV1vwSAeAlRq2j3fFf50zQtIDOyiEc0FwvsUvFB5cpuaIYYhn2G/yK4DMnb/Z+IT9Sp/nY90nERk5sU0fst6uxxpFvxey44f5jWFJ4O8x4XHWUtc3Cv/FFm7kmS+pMYr6e4rFFI6xBoJcvTK3MdIE50LtAa14tt/nW/CFQDNxhkI7n3hpH1LmJJqBgNT/aFoec0yr4nx4CQZk2JAsog1lKHtUvHLRjY+mol2QhUtMc1EON84yelkrcJyzuQyC1twBoRoMpNfPo9JoxZLt6aI/Ypx79gurgDVNA7Mi/HHe/Q2oceWfmLMnK4h/OvtivK4sog5caN0cjH4XeQQl967WVYj0G3hmxk9WzPxz5iUe9aWwzIfiHEPAsysSrata6Tm5RMS3yx4JgJfrAhsNSFXlDdBJvIzvcKP5/iy9AtrpA22N9TJRY4LDRmctk6398FgjwqFCuV5554FNCSUu2w07qpUAeP/T5P9XibtrUnFhMYTYs1kTnI8mNuBG4ePBvCtPHr6wFsHvrh81Ril6V5YYXFaMY5khcMyiy2j9w91G/N7vaL4gi0ypd/tzttf6LatqMf3hYbujYJndDfTl3jlzPnHh93hrtDQISgoTRcxzVVRrDlJsE=
+  buildpack:
+    - https://github.com/HashNuke/heroku-buildpack-elixir.git
+    - https://github.com/gjaldon/heroku-buildpack-phoenix-static.git
