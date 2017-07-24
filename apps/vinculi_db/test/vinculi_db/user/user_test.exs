@@ -7,7 +7,8 @@ defmodule VinculiDb.User.UserTest do
   @invalid_attrs %{}
 
   @valid_user_attrs %{first_name: "John", last_name: "Duff",
-                      email: "john.duff@email.com", pass: "Str0ng!On3"}
+                      email: "john.duff@email.com", pass: "Str0ng!On3",
+                      pass_confirmation: "Str0ng!On3"}
 
   test "general changeset with valid attributes" do
     changeset = User.changeset(%User{}, @valid_attrs)
@@ -47,56 +48,86 @@ defmodule VinculiDb.User.UserTest do
     assert changeset.valid?
   end
 
-  test "user changeset with invalid attributes" do
-    changeset = User.user_changeset(%User{}, @invalid_attrs)
-    refute changeset.valid?
+  describe "Testing failing user changeset:" do
+    test "user changeset with invalid attributes" do
+      changeset = User.user_changeset(%User{}, @invalid_attrs)
+      refute changeset.valid?
+    end
+
+    test "first_name should be at least 3 chars long" do
+      attrs = Map.put(@valid_user_attrs, :first_name, "Oi")
+      changeset = User.user_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:first_name, {"should be at least %{count} character(s)",
+                            [count: 3, validation: :length, min: 3]}}
+             in changeset.errors
+    end
+
+    test "first_name should be less 40 chars long" do
+      attrs = Map.put(@valid_user_attrs, :first_name, String.duplicate("a", 50))
+      changeset = User.user_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:first_name, {"should be at most %{count} character(s)",
+                            [count: 40, validation: :length, max: 40]}}
+             in changeset.errors
+    end
+
+    test "last_name should be at least 3 chars long" do
+      attrs = Map.put(@valid_user_attrs, :last_name, "Oi")
+      changeset = User.user_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:last_name, {"should be at least %{count} character(s)",
+                            [count: 3, validation: :length, min: 3]}}
+             in changeset.errors
+    end
+
+    test "last_name should be less 40 chars long" do
+      attrs = Map.put(@valid_user_attrs, :last_name, String.duplicate("a", 50))
+      changeset = User.user_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:last_name, {"should be at most %{count} character(s)",
+                            [count: 40, validation: :length, max: 40]}}
+             in changeset.errors
+    end
   end
 
-  test "first_name should be at least 3 chars long" do
-    attrs = Map.put(@valid_user_attrs, :first_name, "Oi")
-    changeset = User.user_changeset(%User{}, attrs)
-
-    refute changeset.valid?
-    assert {:first_name, {"should be at least %{count} character(s)",
-                          [count: 3, validation: :length, min: 3]}}
-           in changeset.errors
-  end
-
-  test "first_name should be less 40 chars long" do
-    attrs = Map.put(@valid_user_attrs, :first_name, String.duplicate("a", 50))
-    changeset = User.user_changeset(%User{}, attrs)
-
-    refute changeset.valid?
-    assert {:first_name, {"should be at most %{count} character(s)",
-                          [count: 40, validation: :length, max: 40]}}
-           in changeset.errors
-  end
-
-  test "last_name should be at least 3 chars long" do
-    attrs = Map.put(@valid_user_attrs, :last_name, "Oi")
-    changeset = User.user_changeset(%User{}, attrs)
-
-    refute changeset.valid?
-    assert {:last_name, {"should be at least %{count} character(s)",
-                          [count: 3, validation: :length, min: 3]}}
-           in changeset.errors
-  end
-
-  test "last_name should be less 40 chars long" do
-    attrs = Map.put(@valid_user_attrs, :last_name, String.duplicate("a", 50))
-    changeset = User.user_changeset(%User{}, attrs)
-
-    refute changeset.valid?
-    assert {:last_name, {"should be at most %{count} character(s)",
-                          [count: 40, validation: :length, max: 40]}}
-           in changeset.errors
-  end
-
-  describe "Check user signup" do
+  describe "Check user signup:" do
     test "password is valid" do
       passes = ["v4l1d_Pass", "L0nGP4assw0Rd1sL0ng!"]
 
       Enum.map passes, &(check_valid_password(&1, @valid_user_attrs))
+    end
+
+    test "password confirmation is mandatory" do
+      attrs = Map.delete(@valid_user_attrs, :pass_confirmation)
+      changeset = User.user_signup_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:pass_confirmation, {"can't be blank", [validation: :required]}}
+        in changeset.errors
+    end
+
+    test "password confirmation cannot be empty" do
+      attrs = Map.put(@valid_user_attrs, :pass_confirmation, "")
+      changeset = User.user_signup_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:pass_confirmation, {"can't be blank", [validation: :required]}}
+        in changeset.errors
+    end
+
+    test "password should match password confirmation" do
+      attrs = Map.put(@valid_user_attrs, :pass_confirmation, "bad_confirm")
+      changeset = User.user_signup_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:pass_confirmation, {"password does not match confirmation.",
+              [validation: :confirmation]}}
+        in changeset.errors
     end
 
     test "password should be at least 8 characters long" do

@@ -11,6 +11,7 @@ defmodule VinculiDb.User.User do
     field :last_name, :string
     field :email, :string
     field :pass, :string, virtual: true
+    field :pass_confirmation, :string, virtual: true
     field :password, :string
 
     timestamps()
@@ -50,9 +51,11 @@ defmodule VinculiDb.User.User do
   def user_signup_changeset(struct, params) do
     struct
     |> user_changeset(params)
-    |> cast(params, [:pass])
-    |> validate_required([:pass])
+    |> cast(params, [:pass, :pass_confirmation])
+    |> validate_required([:pass, :pass_confirmation])
     |> validate_length(:pass, min: 8, max: 20)
+    |> validate_confirmation(:pass,
+                              message: "password does not match confirmation.")
     |> validate_password()
     |> put_password_hash()
   end

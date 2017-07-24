@@ -34,7 +34,8 @@ defmodule VinculiDb.User.UserTestHelpers do
   Check the password validity
   """
   def check_valid_password(password, valid_attrs) do
-    attrs = Map.put(valid_attrs, :pass, password)
+    attrs = Map.merge(valid_attrs, %{pass: password,
+                                     pass_confirmation: password})
     changeset = User.user_signup_changeset(%User{}, attrs)
 
     assert changeset.valid?
