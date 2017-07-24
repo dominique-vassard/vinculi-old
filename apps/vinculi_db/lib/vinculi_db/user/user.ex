@@ -3,6 +3,7 @@ defmodule VinculiDb.User.User do
   Manages user data
   """
   use Ecto.Schema
+  alias VinculiDb.Repo
 
   import Ecto.Changeset
 
@@ -91,5 +92,13 @@ defmodule VinculiDb.User.User do
           [message: "should contains at least one digit."])
     |> validate_format(:pass, ~r/[\W_]/,
           [message: "should contains at least one special character."])
+  end
+
+  @doc """
+  Add new user to database
+  """
+  def signup(user_params) do
+    user_signup_changeset(%VinculiDb.User.User{}, user_params)
+    |> Repo.insert()
   end
 end
