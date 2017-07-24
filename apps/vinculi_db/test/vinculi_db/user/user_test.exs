@@ -9,9 +9,6 @@ defmodule VinculiDb.User.UserTest do
   @valid_user_attrs %{first_name: "John", last_name: "Duff",
                       email: "john.duff@email.com", pass: "Str0ng!On3"}
 
-  @valid_website_attrs %{website_url: "http://thegoodjob.com",
-                         email: "admin@thegoodjob.com"}
-
   test "general changeset with valid attributes" do
     changeset = User.changeset(%User{}, @valid_attrs)
     assert changeset.valid?
@@ -95,60 +92,6 @@ defmodule VinculiDb.User.UserTest do
            in changeset.errors
   end
 
-  test "website changeset with valid attributes" do
-    changeset = User.website_changeset(%User{}, @valid_website_attrs)
-    assert changeset.valid?
-  end
-
-  test "website changeset with invalid attributes" do
-    changeset = User.website_changeset(%User{}, @invalid_attrs)
-    refute changeset.valid?
-  end
-
-  test "website_url should be at least 13 chars long" do
-    attrs = Map.put(@valid_user_attrs, :website_url, "mysite.com")
-    changeset = User.website_changeset(%User{}, attrs)
-
-    refute changeset.valid?
-    assert {:website_url, {"should be at least %{count} character(s)",
-                          [count: 13, validation: :length, min: 13]}}
-           in changeset.errors
-  end
-
-  test "website_url should be less 60 chars long" do
-    attrs = Map.put(@valid_website_attrs, :website_url,
-                    String.duplicate("a", 70))
-    changeset = User.website_changeset(%User{}, attrs)
-
-    refute changeset.valid?
-    assert {:website_url, {"should be at most %{count} character(s)",
-                          [count: 60, validation: :length, max: 60]}}
-           in changeset.errors
-  end
-
-  test "website url should be downcased" do
-    cased_url = "http://CaSED-Site.FR"
-    attrs = Map.put(@valid_website_attrs, :website_url, cased_url)
-    changeset = User.website_changeset(%User{}, attrs)
-
-    assert changeset.valid?
-    assert changeset.changes.website_url == String.downcase(cased_url)
-  end
-
-  test "website url should not accept invalid urls" do
-    urls = ["http://Weo:;url.com", "noprotocol.com", "http://nodomain",
-            "ftp://ftpnotvalid", "http://<script>iswrong.net",
-            "http://wrong_host.com", "http://wrong.doma1n"]
-
-    Enum.map(urls, &(check_invalid_url(&1, @valid_website_attrs)))
-  end
-
-  test "website_url should accept valid urls" do
-    urls = ["http://goodsite.com", "https://secure.com",
-            "http://sub9.domain.com", "http://eng.co.uk", "http://hyp-hen.com"]
-    Enum.map(urls, &(check_valid_url(&1, @valid_website_attrs)))
-  end
-
   describe "Check user signup" do
     test "password is valid" do
       passes = ["v4l1d_Pass", "L0nGP4assw0Rd1sL0ng!"]
@@ -229,22 +172,6 @@ defmodule VinculiDb.User.UserTest do
       assert {:pass, {"should contains at least one special character.",
                       [validation: :format]}}
           in changeset.errors
-    end
-  end
-
-  describe "Check website signup: " do
-    test "password should be no less than 32 characters long" do
-      changeset =
-        User.website_signup_changeset(%User{}, @valid_website_attrs)
-      %{pass: pass} = changeset.changes
-
-      assert changeset.valid?
-      assert String.length(pass) == 32
-    end
-
-    test "a valid password hash is generated" do
-      User.website_signup_changeset(%User{}, @valid_website_attrs)
-      |> check_password_hash()
     end
   end
 
