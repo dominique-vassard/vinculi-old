@@ -21,6 +21,10 @@ defmodule VinculiWeb.Web.ConnCase do
       use Phoenix.ConnTest
       import VinculiWeb.Web.Router.Helpers
 
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
+
       # The default endpoint for testing
       @endpoint VinculiWeb.Web.Endpoint
     end
