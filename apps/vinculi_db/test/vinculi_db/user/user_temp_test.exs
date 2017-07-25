@@ -3,13 +3,14 @@ defmodule VinculiDb.User.UserTempTest do
   alias VinculiDb.User.UserTemp
 
   test "Add a user to database" do
-    attrs = %{first_name: "John", last_name: "Duff",
-                  email: "john.duff@email.com", pass: "Gr34tPass!"}
+    attrs = %{first_name: "VinculiDb", last_name: "Duff",
+                  email: "john.duff@email.com", pass: "Gr34tPass!",
+                  pass_confirmation: "Gr34tPass!"}
     assert {:ok, insert_result} = UserTemp.add(attrs)
 
-    result = Map.put(insert_result, :pass, nil)
+    result = Map.merge(insert_result, %{pass: nil, pass_confirmation: nil})
 
-    res = UserTemp.get_by_firstname("John")
+    res = UserTemp.get_by_firstname("VinculiDb")
     assert res == result
   end
 end

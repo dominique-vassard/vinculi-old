@@ -216,7 +216,7 @@ defmodule VinculiDb.User.UserTest do
     test "fail to insert invalid changeset" do
       attrs = Map.put(@valid_user_attrs, :pass_confirmation, "bad_confirm")
 
-      assert {:error, changeset} = User.signup(attrs)
+      assert {:error, _changeset} = User.signup(attrs)
     end
 
     test "Successful insert with valid changeset" do
