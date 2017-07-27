@@ -101,4 +101,11 @@ defmodule VinculiDb.User.User do
     user_signup_changeset(%VinculiDb.User.User{}, user_params)
     |> Repo.insert()
   end
+
+  @doc """
+  Get user for the given id
+  """
+  def get(user_id) do
+    Repo.get(VinculiDb.User.User, user_id)
+  end
 end
