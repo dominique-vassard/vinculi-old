@@ -2,6 +2,10 @@ defmodule VinculiWeb.Web.AuthController do
   use VinculiWeb.Web, :controller
   alias VinculiDb.User.User
 
+  def login(conn, _params) do
+    render conn, "login.html"
+  end
+
   def signup(conn, _params) do
     changeset = User.changeset %User{}
     render conn, "signup.html", changeset: changeset

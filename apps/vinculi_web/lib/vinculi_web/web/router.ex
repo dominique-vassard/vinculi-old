@@ -7,6 +7,7 @@ defmodule VinculiWeb.Web.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug VinculiWeb.Web.Auth, user_repo: VinculiDb.User.User
   end
 
   pipeline :api do
@@ -16,9 +17,15 @@ defmodule VinculiWeb.Web.Router do
   scope "/", VinculiWeb.Web do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/login", AuthController, :login
     get "/signup", AuthController, :signup
     post "/create", AuthController, :create
+  end
+
+  scope "/", VinculiWeb.Web do
+    pipe_through [:browser, :authenticate_user]
+
+    get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
