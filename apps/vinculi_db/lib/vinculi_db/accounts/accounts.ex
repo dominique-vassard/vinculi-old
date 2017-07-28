@@ -41,4 +41,17 @@ defmodule VinculiDb.Accounts do
   def get_user!(user_id) do
     Repo.get!(User, user_id)
   end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+
+  ## Examples
+
+      iex> change_user(user)
+      %Ecto.Changeset{source: %User{}}
+
+  """
+  def change_user(%User{} = user) do
+    User.changeset(user, %{})
+  end
 end
