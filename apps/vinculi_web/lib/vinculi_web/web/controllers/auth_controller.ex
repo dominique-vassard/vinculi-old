@@ -1,5 +1,6 @@
 defmodule VinculiWeb.Web.AuthController do
   use VinculiWeb.Web, :controller
+
   alias VinculiDb.Accounts.User
   alias VinculiDb.Accounts
 

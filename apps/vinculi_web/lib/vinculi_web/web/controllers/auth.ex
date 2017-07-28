@@ -16,7 +16,7 @@ defmodule VinculiWeb.Web.Auth do
   """
   def call(conn, user_repo) do
     user_id = get_session(conn, :user_id)
-    user = user_id && user_repo.get_user(user_id)
+    user = user_id && user_repo.get_user!(user_id)
     assign conn, :current_user, user
   end
 

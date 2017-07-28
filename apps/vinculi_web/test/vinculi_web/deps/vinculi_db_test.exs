@@ -10,7 +10,7 @@ defmodule VinculiWeb.Web.VinculiDbTest do
 
     result = Map.merge(user, %{pass: nil, pass_confirmation: nil})
 
-    res = Accounts.get_user(user.id)
+    res = Accounts.get_user!(user.id)
     assert res == result
     assert res.first_name == "VinculiWeb"
   end
