@@ -1,6 +1,6 @@
-defmodule VinculiDb.User.UserTestHelpers do
+defmodule VinculiDb.AccountsTestHelpers do
   use ExUnit.CaseTemplate
-  alias VinculiDb.User.User
+  alias VinculiDb.Accounts.User
 
   @doc """
   Get changeset for the given email

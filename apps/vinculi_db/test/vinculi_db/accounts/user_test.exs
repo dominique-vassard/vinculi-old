@@ -1,7 +1,7 @@
-defmodule VinculiDb.User.UserTest do
+defmodule VinculiDb.Accounts.UserTest do
   use VinculiDb.SupportCase, async: true
-  import VinculiDb.User.UserTestHelpers
-  alias VinculiDb.User.User
+  import VinculiDb.AccountsTestHelpers
+  alias VinculiDb.Accounts.User
 
   @valid_attrs %{email: "gOOd1-email@domain.com"}
   @invalid_attrs %{}
@@ -210,20 +210,5 @@ defmodule VinculiDb.User.UserTest do
       change(%User{}, pass: "v4l1d_Pass")
       |> User.put_password_hash()
       |> check_password_hash()
-  end
-
-  describe "test user signup (databse add): " do
-    test "fail to insert invalid changeset" do
-      attrs = Map.put(@valid_user_attrs, :pass_confirmation, "bad_confirm")
-
-      assert {:error, _changeset} = User.signup(attrs)
-    end
-
-    test "Successful insert with valid changeset" do
-      assert {:ok, user} = User.signup(@valid_user_attrs)
-      assert %{first_name: "John", last_name: "Duff",
-                      email: "john.duff@email.com", pass: "Str0ng!On3",
-                      pass_confirmation: "Str0ng!On3"} = user
-    end
   end
 end
