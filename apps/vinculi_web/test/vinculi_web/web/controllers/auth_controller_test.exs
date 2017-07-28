@@ -1,7 +1,7 @@
 defmodule VinculiWeb.Web.AuthControllerTest do
   use VinculiWeb.Web.ConnCase
   alias VinculiDb.Repo
-  alias VinculiDb.User.User
+  alias VinculiDb.Accounts.User
 
   @valid_user_attrs %{first_name: "John", last_name: "Duff",
                       email: "john.duff@email.com", pass: "Str0ng!On3",

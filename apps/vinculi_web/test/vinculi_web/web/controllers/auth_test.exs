@@ -16,7 +16,7 @@ defmodule VinculiWeb.Web.AuthTest do
 
     conn =
     conn
-    |> assign(:current_user, %VinculiDb.User.User{})
+    |> assign(:current_user, %VinculiDb.Accounts.User{})
     |> Auth.authenticate_user([])
 
     refute conn.halted

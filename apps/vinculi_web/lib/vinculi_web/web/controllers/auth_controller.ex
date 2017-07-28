@@ -1,6 +1,7 @@
 defmodule VinculiWeb.Web.AuthController do
   use VinculiWeb.Web, :controller
-  alias VinculiDb.User.User
+  alias VinculiDb.Accounts.User
+  alias VinculiDb.Accounts
 
   def login(conn, _params) do
     render conn, "login.html"
@@ -12,7 +13,7 @@ defmodule VinculiWeb.Web.AuthController do
   end
 
   def create(conn, %{"user" => user_param}) do
-    case User.signup(user_param) do
+    case Accounts.signup_user(user_param) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Welcome #{user.first_name} #{user.last_name}")
