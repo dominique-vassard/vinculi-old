@@ -26,8 +26,14 @@ defmodule VinculiDb.User.UserRepoTest do
   test "Get a user" do
     {:ok, user} = Accounts.signup_user(@valid_user_attrs)
 
-    res =  Accounts.get_user(user.id)
+    res =  Accounts.get_user!(user.id)
     assert %{first_name: "John", last_name: "Duff",
                   email: "john.duff@email.com"} = res
+  end
+
+  test "Get non-existing user" do
+    assert_raise Ecto.NoResultsError, fn ->
+      Accounts.get_user!(-65987)
+    end
   end
 end
