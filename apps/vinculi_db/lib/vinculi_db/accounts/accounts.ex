@@ -1,5 +1,7 @@
 defmodule VinculiDb.Accounts do
+  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias VinculiDb.Repo
+
   alias VinculiDb.Accounts.User
 
   @moduledoc """
@@ -53,5 +55,48 @@ defmodule VinculiDb.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  @doc """
+  Authenticate user with email and password.
+
+  Returns an `{:ok, user}` when successful.
+  Otherwise returns a `{:error, :unauthorized}` tuple.
+
+  ## Examples
+      iex> authenticate_user_by_email_password(right_email, right_password)
+      {:ok, %User{}}
+
+      iex> authenticate_user_by_email_password(wrong_email, right_password)
+      {:error, :unauthorized}
+
+      iex> authenticate_user_by_email_password(right_email, wrong_password)
+      {:error, :unauthorized}
+
+      iex> authenticate_user_by_email_password(wrong_email, wrong_password)
+      {:error, :unauthorized}
+  """
+  def authenticate_user_by_email_password(email, password) do
+    params = %{email: email, pass: password}
+    changeset = User.login_changeset(%User{}, params)
+
+    authenticate_user_by_email_password(changeset)
+  end
+
+  defp authenticate_user_by_email_password(
+    %{changes: %{email: email, pass: pass}, valid?: valid}) when valid do
+    user = Repo.get_by User, email: email
+
+    cond do
+      user && checkpw(pass, user.password) ->
+        {:ok, user}
+      true ->
+        dummy_checkpw()
+        {:error, :unauthorized}
+    end
+  end
+
+  defp authenticate_user_by_email_password(%{valid?: valid}) when valid == false do
+    {:error, :unauthorized}
   end
 end

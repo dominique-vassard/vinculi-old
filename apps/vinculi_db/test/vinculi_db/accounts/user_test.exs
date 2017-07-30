@@ -211,4 +211,29 @@ defmodule VinculiDb.Accounts.UserTest do
       |> User.put_password_hash()
       |> check_password_hash()
   end
+
+  describe "Check login changeset: " do
+    @valid_attrs %{email: "good.email@domain.com", pass: "Str0ng!On3"}
+
+    test "login_changeset/2 with valid params" do
+      assert %Ecto.Changeset{valid?: true} =
+        User.login_changeset(%User{}, @valid_attrs)
+    end
+
+    test "login_changeset/2 with invalid email returns an changeset error" do
+      attrs = Map.put(@valid_attrs, :email, "<script>alert('hello')</script>")
+      changeset = User.login_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+      assert {:email,  {"has invalid format", [validation: :format]}}
+          in changeset.errors
+    end
+
+    test "login_changeset/2 with invalid pass returns an changeset error" do
+      attrs = Map.put(@valid_attrs, :pass, "<script>alert('hello')</script>")
+      changeset = User.login_changeset(%User{}, attrs)
+
+      refute changeset.valid?
+    end
+  end
 end

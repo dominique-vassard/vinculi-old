@@ -1,4 +1,4 @@
-defmodule VinculiDb.User.UserRepoTest do
+defmodule VinculiDb.Accounts.UserRepoTest do
   use VinculiDb.SupportCase
 
   alias VinculiDb.Accounts
@@ -19,13 +19,13 @@ defmodule VinculiDb.User.UserRepoTest do
       user
     end
 
-    test "get_user/2 returns %User if it exists" do
+    test "get_user/1 returns %User if it exists" do
       user = user_fixture()
       user_wo_virtual = Map.merge(user, %{pass: nil, pass_confirmation: nil})
       assert Accounts.get_user!(user.id) == user_wo_virtual
     end
 
-    test "get_user/2 raises an Exception if user doesn't exist" do
+    test "get_user/1 raises an Exception if user doesn't exist" do
       assert_raise Ecto.NoResultsError, fn ->
         Accounts.get_user!(-65987)
       end
@@ -50,6 +50,40 @@ defmodule VinculiDb.User.UserRepoTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
 
+    test "authenticate_user_by_email_password/2 with valid credentials" do
+      user = user_fixture()
+      %User{email: email, pass: pass} = user
+      assert {:ok, auth_user} =
+        Accounts.authenticate_user_by_email_password(email, pass)
+      user_wo_virtual = Map.merge(user, %{pass: nil, pass_confirmation: nil})
+      assert auth_user == user_wo_virtual
+    end
+
+    test "authenticate_user_by_email_password/2 with invalid email" do
+      %User{pass: pass} = user_fixture()
+      assert {:error, :unauthorized} =
+        Accounts.authenticate_user_by_email_password("not-exist@null.fr", pass)
+    end
+
+    test "authenticate_user_by_email_password/2 with invalid password" do
+      %User{email: email} = user_fixture()
+      assert {:error, :unauthorized} =
+        Accounts.authenticate_user_by_email_password(email, "N0t_Ex1st")
+    end
+
+    test "authenticate_user_by_email_password/2 with both invalid creds" do
+      user_fixture()
+      assert {:error, :unauthorized} =
+        Accounts.authenticate_user_by_email_password("not-exist@null.fr",
+                                                     "N0t_Ex1st")
+    end
+
+    test "authenticate_user_by_email_password/2 with wrong changeset" do
+      user_fixture()
+      assert {:error, :unauthorized} =
+        Accounts.authenticate_user_by_email_password("invalid_email",
+                                                     "N0t_Ex1st")
+    end
   end
 
 

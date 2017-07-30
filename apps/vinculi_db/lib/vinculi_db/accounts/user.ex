@@ -61,6 +61,16 @@ defmodule VinculiDb.Accounts.User do
   end
 
   @doc """
+  Login changeset: validate email/password to avoid injection
+  """
+  def login_changeset(struct, params) do
+    struct
+    |> changeset(params)
+    |> cast(params, [:pass])
+    |> validate_password()
+  end
+
+  @doc """
   Computes password hash from pass
   """
   def put_password_hash(changeset) do
