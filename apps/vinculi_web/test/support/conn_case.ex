@@ -25,6 +25,8 @@ defmodule VinculiWeb.Web.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
+      import VinculiWeb.Web.UserHelpers
+
       # The default endpoint for testing
       @endpoint VinculiWeb.Web.Endpoint
     end

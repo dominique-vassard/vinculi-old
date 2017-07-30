@@ -5,7 +5,8 @@ defmodule VinculiWeb.Web.AuthController do
   alias VinculiDb.Accounts
 
   def login(conn, _params) do
-    render conn, "login.html"
+    changeset = Accounts.change_user %User{}
+    render conn, "login.html", changeset: changeset
   end
 
   def signup(conn, _params) do

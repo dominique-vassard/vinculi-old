@@ -31,4 +31,11 @@ defmodule VinculiWeb.Web.AuthControllerTest do
       assert redirected_to(conn) == page_path(conn, :index)
     end
   end
+
+  test "login/2 has all required fields", %{conn: conn} do
+    conn = get conn, auth_path(conn, :login)
+    content = html_response(conn, 200)
+    assert content =~ "session_email"
+    assert content =~ "session_pass"
+  end
 end

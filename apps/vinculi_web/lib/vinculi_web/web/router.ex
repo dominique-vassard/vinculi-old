@@ -7,7 +7,7 @@ defmodule VinculiWeb.Web.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug VinculiWeb.Web.Auth, user_repo: VinculiDb.User.User
+    plug VinculiWeb.Web.Auth, user_repo: VinculiDb.Accounts
   end
 
   pipeline :api do
@@ -20,6 +20,8 @@ defmodule VinculiWeb.Web.Router do
     get "/login", AuthController, :login
     get "/signup", AuthController, :signup
     post "/create", AuthController, :create
+    resources "/session", SessionController, only: [:create]
+    delete "/session", SessionController, :delete
   end
 
   scope "/", VinculiWeb.Web do
