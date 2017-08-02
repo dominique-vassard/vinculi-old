@@ -1,4 +1,4 @@
-defmodule VinculiDb.User.User do
+defmodule VinculiDb.Accounts.User do
   @moduledoc """
   Manages user data
   """
@@ -9,9 +9,9 @@ defmodule VinculiDb.User.User do
   schema "users" do
     field :first_name, :string
     field :last_name, :string
-    field :website_url, :string
     field :email, :string
     field :pass, :string, virtual: true
+    field :pass_confirmation, :string, virtual: true
     field :password, :string
 
     timestamps()
@@ -19,7 +19,6 @@ defmodule VinculiDb.User.User do
 
   @required_fields ~w(email)
   @user_required_fields ~w(first_name last_name)
-  @website_required_fields ~w(website_url)
 
   @doc """
   General changeset: common data
@@ -52,37 +51,23 @@ defmodule VinculiDb.User.User do
   def user_signup_changeset(struct, params) do
     struct
     |> user_changeset(params)
-    |> cast(params, [:pass])
-    |> validate_required([:pass])
+    |> cast(params, [:pass, :pass_confirmation])
+    |> validate_required([:pass, :pass_confirmation])
     |> validate_length(:pass, min: 8, max: 20)
+    |> validate_confirmation(:pass,
+                              message: "password does not match confirmation.")
     |> validate_password()
     |> put_password_hash()
   end
 
   @doc """
-  Website changeset: for website
+  Login changeset: validate email/password to avoid injection
   """
-  def website_changeset(struct, params) do
-    url_regex = ~r/^https?:\/\/[a-z0-9\-]+\.[a-z]+(\.{1}[a-z]+)?$/i
+  def login_changeset(struct, params) do
     struct
     |> changeset(params)
-    |> cast(params, @website_required_fields)
-    |> validate_required(Enum.map @website_required_fields, &String.to_atom/1)
-    |> validate_length(:website_url, min: 13, max: 60)
-    |> validate_format(:website_url, url_regex)
-    |> update_change(:website_url, &String.downcase/1)
-  end
-
-  @doc """
-  Website changeset: signup process (with password creation)
-  """
-  def website_signup_changeset(struct, params) do
-    struct
-    |> website_changeset(params)
-    |> put_change(:pass, VinculiDb.Password.generate(32))
-    |> validate_length(:pass, min: 32, max: 32)
+    |> cast(params, [:pass])
     |> validate_password()
-    |> put_password_hash()
   end
 
   @doc """
