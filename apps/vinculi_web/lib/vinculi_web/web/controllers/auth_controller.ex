@@ -18,7 +18,8 @@ defmodule VinculiWeb.Web.AuthController do
     case Accounts.signup_user(user_param) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "Welcome #{user.first_name} #{user.last_name}")
+        |> put_flash(:info, "Hi #{user.first_name} #{user.last_name},
+                             you can login using your credentials")
         |> redirect(to: page_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render conn, "signup.html", changeset: changeset

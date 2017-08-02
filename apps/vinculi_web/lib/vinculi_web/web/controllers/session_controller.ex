@@ -4,7 +4,6 @@ defmodule VinculiWeb.Web.SessionController do
   alias VinculiWeb.Web.Auth
 
   alias VinculiDb.Accounts
-  alias VinculiDb.Accounts.User
 
   def create(conn, %{"session" => %{"email" =>email, "pass" => pass}}) do
     case Accounts.authenticate_user_by_email_password(email, pass) do

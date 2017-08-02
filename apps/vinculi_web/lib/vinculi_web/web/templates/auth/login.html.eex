@@ -9,5 +9,7 @@
         <%= password_input f, :pass, placeholder: "Password", class: "form-control" %>
         <%= error_tag f, :pass %>
     </div>
-    <%= submit "Sign up", class: "btn btn-primary" %>
+    <%= submit "Login", class: "btn btn-primary" %>
+
+    <%= link "Sign up", to: auth_path(@conn, :signup) %>
 <% end %>
